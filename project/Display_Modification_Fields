@@ -1,0 +1,268 @@
+
+    import javax.servlet.http.*;
+    import javax.servlet.*;
+    import java.io.*;
+    import java.sql.*;
+	import java.util.Hashtable;
+	import java.util.Calendar;
+	import java.text.DateFormat;
+	import java.text.ParseException;
+    
+public class Display_Modification_Fields extends HttpServlet
+{
+
+/**wrote separate file c_Prameters.java*******/
+
+	private	Connection con;
+	private	String Flight_No;
+	public void init(ServletConfig Config) throws ServletException                        
+	{
+			super.init(Config);									//register the init parameters
+			c_Parameters	param=new c_Parameters();
+			con=param.m_getConnection();			//get Connection from c_Prameters class
+		
+/*				if(! param.hashTable.isEmpty())			//here use negation for test the condition
+				param.hashTable.clear();					//make empty hashTable
+			*/
+	}
+  public void doPost(HttpServletRequest req,HttpServletResponse res)throws ServletException,IOException
+   {
+			c_Parameters	param=new c_Parameters();	//I use separate class for passing the parameters from one fun to other
+										param.req=req;
+										param.res=res;
+										param.pw=pw;
+									
+			PreparedStatement st;
+			String sql;
+		
+			param.m_writeGetParameters(param);				// in this fuction all parameters store in hashTable
+			Hashtable hashTable=param.hashTable;
+
+	    try{
+				Flight_No=(String)hashTable.get("Flight_No");
+
+System.out.println("******before 			Update_Flight_Master_Table(param) **********");
+			Display_Flight_Master_Table(param);
+System.out.println("******before 			Update_Flight_Desc_Table(param) **********");
+			Display_Flight_Desc_Table(param);
+System.out.println("******before 			Update_Flight_Details_Table(param) **********");
+			Display_Flight_Details_Table(param);
+System.out.println("******before 						Update_Current_Details_Table(param) **********");
+			Display_Current_Details_Table(param);
+System.out.println("******after 						Update_Current_Details_Table(param) **********");
+//		 res.sendRedirect("/inside_holidaysairways.html");
+/*
+			System.out.println("******before sql**********");
+
+			sql="INSERT INTO Flight_Details VALUES (?,?,?,?)";
+			PreparedStatement st       =con.prepareStatement(sql);
+			System.out.println("******afetr sql**********");
+			System.out.println((String)hashTable.get("Flight_No"));
+			System.out.println((String)hashTable.get("Day_of_flight"));
+			System.out.println((String)hashTable.get("Time_of_flight"));
+			System.out.println((String)hashTable.get("Date_of_Departure"));
+
+			st.setString(1,(String)hashTable.get("Flight_No"));
+			st.setString(2,(String)hashTable.get("Day_of_flight"));
+			st.setString(3,(String)hashTable.get("Time_of_flight"));
+			st.setString(4,(String)hashTable.get("Date_of_Departure"));
+System.out.println("******after SetString**********");			
+            int count=st.executeUpdate();
+System.out.println("******after exeUpdate**********");      */
+		/*
+			String Title       ="AddRecordSearch3";
+			
+			//invoke same function from Screen3
+		//	Screen3 objScreen3 =new Screen3();
+		
+			objScreen3.writeHead(param,Title);			
+System.out.println("******after head**********");
+			objScreen3.writeBody(param);
+System.out.println("*****after body***********");
+			objScreen3.writeScript(param);
+System.out.println("*****after script***********");
+
+
+
+*/
+/*          
+  //it return the value attribute of select cnt. which is our FlightName
+  String Flight_No       =req.getParameter("Flight_No");
+  String Date_of_Departure=req.getParameter("Date_of_Departure");
+  String Day_of_flight   =req.getParameter("Day_of_flight");
+  String Hour            =req.getParameter("Hour");
+  String Minute          =req.getParameter("Minute");
+  String Second          =req.getParameter("Second");
+  String AMPM            =req.getParameter("AMPM");
+*/
+
+
+         }//catch(ClassNotFoundException e){pw.print(e.getMessage()+"<html><body>Class error... </body></html>");}
+         catch(SQLException e){  pw.print(e.getMessage()+"<html><body>SQL Error</body>"+e.getSQLState()+"</html>");}
+          catch(NumberFormatException e){ pw.print(e.getMessage()+"<html><body> Number Format Error...</body></html>");}
+
+     }//doPost
+
+    public void doGet(HttpServletRequest req,HttpServletResponse res) throws ServletException,IOException
+    {
+		doPost(req,res);
+
+    }//doGet()
+
+
+/*******************HTML FUNCTIONS**********************/
+/*********************no HTML FUNCTION ALL INVOKE FROM SCREEN3SEVLET()*/
+
+/* other common function also writen in Screen3*/
+/*	
+	
+	public void m_Display_Day_Month_Year(c_Parameters param )
+	{
+		PrintWriter pw =param.pw;
+		//Day
+		
+		pw.print("<select name=Day size=1>"); 
+		
+		for(int i=1;i<=31;i++)
+		{
+			pw.println("<option name="+i+" id="+i+" value="+i+">"+i+"</option>");
+		}//for
+		
+		pw.print("</select>Day");
+
+		//Month
+		
+		pw.print("<select name=Month size=1>"); 
+		
+		for(int i=1;i<=12;i++)
+		{
+			pw.println("<option name="+i+" id="+i+" value="+i+">"+i+"</option>");
+		}//for
+		
+		pw.print("</select>Month");
+		
+		//Year
+				
+		pw.print("<select name=Year size=1>"); 
+		
+		for(int i=2000;i<=2010;i++)
+		{
+			pw.println("<option name="+i+" id="+i+" value="+i+">"+i+"</option>");
+		}//for
+		
+		pw.println("</select>Year<br>");
+		
+		
+	}//m_Display_Day_Month_Year(c_Parameters param )
+	
+	public void m_Display_Weeks_with_listbox(c_Parameters param)
+	{
+		PrintWriter pw =param.pw;
+		pw.print("<select name=Day_of_flight size=1>"); 
+			pw.println("<option name=Sunday id=Sunday value=Sunday>Sunday</option>");
+			pw.println("<option name=Monday id=Monday value=Monday>Monday</option>");
+			pw.println("<option name=Thuesday id=Thuesday value=Thuesday>Thuesday</option>");
+			pw.println("<option name=Wednesday id=Wednesday value=Wednesday>Wednesday</option>");
+			pw.println("<option name=Thusday id=Thusday value=Thusday>Thusday</option>");
+			pw.println("<option name=Friday id=Friday value=Friday>Friday</option>");
+			pw.println("<option name=Saturday id=Saturday value=Saturday>Saturday</option>");
+       pw.println("</select><br>");
+		
+	}
+*/
+
+			public void Display_Flight_Master_Table(c_Parameters param)
+			{
+																PrintWriter pw=param.pw;
+								try{
+														ResultSet rs;
+														//Connection con=param.con;
+														String sql;
+														Hashtable hashTable=param.hashTable;
+														sql="SELECT [Flight_No], [Flight_Name], [Source], [Destination], [Total_capacity], [Duration_of_Flight] FROM Flight_Master where Flight_No="+Flight_No;
+
+														PreparedStatement Flight_Master_st=con.prepareStatement(sql);
+														ResultSet Flight_Master_rs=Flight_Master_st.executeQuery();
+
+														htmlresultset =new htmlresultset(Flight_Master_rs);
+														pw.println(htmlresultset.printtable());
+
+									}catch(SQLException  e){ param.res.setContentType("text/html");
+																											e.printStackTrace(param.pw);}
+
+
+			}//	public void Update_Flight_Master_Table(c_Parameters param)
+			public void Display_Flight_Desc_Table(c_Parameters param)
+			{
+													PrintWriter pw=param.pw;
+					try{
+														ResultSet rs;
+														//Connection con=param.con;
+														String sql;
+														Hashtable hashTable=param.hashTable;
+														sql="SELECT [Flight_No], [Category], [Cost_of_ticket], [Starting_SeatNo], [Ending_SeatNo] FROM Flight_Desc where Flight_No="+Flight_No;
+
+
+														PreparedStatement Flight_Desc_st=con.prepareStatement(sql);
+														ResultSet Flight_Desc_rs=Flight_Desc_st.executeQuery();
+
+														htmlresultset =new htmlresultset(Flight_Desc_rs);
+														pw.println(htmlresultset.printtable());
+
+
+									}catch(SQLException  e){ param.res.setContentType("text/html");
+																											e.printStackTrace(param.pw);}
+
+
+			}//public void Update_Flight_Desc_Table(param);
+			public void Display_Flight_Details_Table(c_Parameters param)
+			{
+													PrintWriter pw=param.pw;	
+				try{								
+														ResultSet rs;
+														//Connection con=param.con;
+														String sql;
+														Hashtable hashTable=param.hashTable;
+														sql="SELECT [Flight_No], [Day_of_flight], [Date_of_Departure] FROM Flight_Details WHERE Flight_No="+Flight_No;
+
+
+														PreparedStatement Flight_Details_st=con.prepareStatement(sql);
+														ResultSet Flight_Details_rs=Flight_Details_st.executeQuery();
+
+														htmlresultset =new htmlresultset(Flight_Details_rs);
+														pw.println(htmlresultset.printtable());
+
+
+									}catch(SQLException  e){ param.res.setContentType("text/html");
+																											e.printStackTrace(param.pw);}
+
+			}//	public void Update_Flight_Details_Table(param)
+
+			public void Display_Current_Details_Table(c_Parameters param)
+			{
+													PrintWriter pw=param.pw;	
+
+											try{
+														ResultSet rs;
+														//Connection con=param.con;
+														String sql;
+														Hashtable hashTable=param.hashTable;
+														sql="SELECT [Flight_No], [Category], [Availabe_Seats] FROM Current_Details  WHERE Flight_No="+Flight_No;
+
+
+														PreparedStatement   Current_Details_st=con.prepareStatement(sql);
+														ResultSet Current_Details_rs=Current_Details_st.executeQuery();
+
+														htmlresultset =new htmlresultset(Current_Details_rs);
+														pw.println(htmlresultset.printtable());
+
+
+									}catch(SQLException  e){ param.res.setContentType("text/html");
+																											e.printStackTrace(param.pw);}
+
+
+			}//public void Update_Current_Details_Table(c_Parameters param)
+
+
+}//class Display_FlightNumber_List
+

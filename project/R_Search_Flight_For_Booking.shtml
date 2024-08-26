@@ -1,0 +1,112 @@
+
+<html>
+<body bgcolor= #FFFFFF text='black'>
+<form method=GET name=Search_Flight_For_Booking>
+<center><font color=#3333FF> Flight Search</font></center><pre>
+<TABLE align=center valign=center  width="568" cellpadding="0" cellspacing="0" border="0">
+	<TR>
+	<TD valign=top>
+	<TABLE bgcolor="#FFCC99" cellpadding="2" cellspacing="1" border="0" width="300">
+	<TR>
+	<TD valign=center align=center>
+	<TABLE border="0" cellpadding="5" cellspacing="0" bgcolor="#FFFFCC" width="300">
+	<TR>
+	<TD>From </TD>
+	<TD><select name=LSource <select name='Source' size=1 ><option value=Source>Select Source City/Airport</option><servlet name=Screen1getLocation code="http://localhost:8080/servlet/Screen1ssi2"><param name="Table2" value="Location"><param name="SelectName2" value="Location"></servlet></select></TD>
+	<TR>
+	<TD>TO</TD><TD><select name=LDestination  size=1 ><option value=Destination>Select Destination City/Airport</option><servlet name=Screen1getLocation code="http://localhost:8080/servlet/Screen1ssi2"><param name="Table2" value="Location"><param name="SelectName" value="Location"></servlet></select></TD>
+	</TR>
+	<TR>
+	<TD>
+	 Outbound Date  </TD>
+	<TD>
+	</body><script>document.write('<select  name=LMonth Value= size=1 >');for(i=1;i<=12;i++)
+	{
+		document.writeln('<option value='+i+' id='+i+' >'+ i +'</option>');
+	}
+	document.write('</select>');
+	document.write('<select  name=LDay Value= size=1 >');for(i=1;i<=31;i++)
+	{
+		document.writeln('<option value='+i+' id='+i+' >'+ i +'</option>');
+	}
+	document.write('</select>');</script><body>
+			<select name='LMorningEvening' size=1><option value=Morning id=Morning>Morning</option>
+			<option value=Evening id=Evening>Evening</option>
+			</select>
+	</TD>
+	</TR>
+	<TR>
+	<TD> </TD>
+	<TD>Travel Class
+	<select  name='LCategory' size=1>
+			<br><option name=First value=First>First</option>
+			<br><option name=Economic value=Economic>Economic</option>
+			<br><option name=Bussiness value=Bussiness>Bussiness</option>
+			</select>
+	</TD>
+	<TR>
+	<TD> </TD>
+    <TD>Number Of Traveller	</TD>
+    </TR>
+    
+    <TR>
+    <TD>
+    </TD>
+    
+    <TD>Adult
+		<select  name='LAdult' size=1>
+		<option value=1 id=1>1</option>
+		<option value=2 id=2>2</option>
+		<option value=3 id=3>3</option>
+		<option value=4 id=4>4</option>
+		<option value=5 id=5>5</option>
+		</select>
+	</TD>
+	</TR>
+	<TR>
+    <TD>
+    </TD>
+    
+    <TD>Child
+		<select  name='LChild' size=1>
+		<option value=0 id=0>0</option>
+		<option value=1 id=1>1</option>
+		<option value=2 id=2>2</option>
+		<option value=3 id=3>3</option>
+		<option value=4 id=4>4</option>
+		</select>
+	</TD>
+	<TD><center><input type=button value=go_next onclick='Validate(Search_Flight_For_Booking)'></center></TD>
+
+	</TR>
+	</TABLE>
+	
+	</TD>
+	</TR>
+	</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+	
+	
+</pre></td></table>
+
+</form>
+</pre>
+</body>
+<script>
+function Validate(form1)
+{
+	if(form1.elements[0].value==form1.elements[1].value)    
+	{
+		alert('Source & Destination should not be Same');
+     }
+	else
+			{				alert("yes ");
+				form1.action='http://localhost:8080/servlet/R_Display_Flight_List';	
+
+				form1.submit();
+			}
+}
+</script>
+</html>
